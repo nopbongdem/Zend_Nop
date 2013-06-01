@@ -11,22 +11,8 @@ class Nop_Controller_Plugin_Navigation extends Zend_Controller_Plugin_Abstract {
 
     public function preDispatch(Zend_Controller_Request_Abstract $request) {
 
-        $dbOptions = Zend_Controller_Front::getInstance()
-                        ->getParam('bootstrap')->getOption('resources');
-        $dbOption = $dbOptions['db'];
-
-        // Setup database
-        $db = Zend_Db::factory($dbOption['adapter'], $dbOption['params']);
-
-        $db->setFetchMode(Zend_Db::FETCH_ASSOC);
-        $db->query("SET NAMES 'utf8'");
-        $db->query("SET CHARACTER SET 'utf8'");
-
-        $select = $db->select()
-                ->from($this->_name)
-                ->where("status =?", 1)
-                ->order('rang ASC');
-        $result = $db->fetchAll($select);
+        $navi = new Nop_Db_Table_Navigation();
+        $result = $navi->result();
         
         $re = new Nop_System_Recursive($result);
         $pages = $re->buildRecursive(0);
