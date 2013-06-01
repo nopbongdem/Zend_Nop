@@ -33,6 +33,14 @@ class Nop_Db_Table_Navigation extends Zend_Db_Table_Abstract {
         return $this->_db->fetchRow($select);
     }
 
+	public function result() {
+        $select = $this->_db->select()
+                ->from($this->_name)
+                ->order('id ASC')
+        ;
+        return $this->_db->fetchAll($select);
+    }
+	
     public function showMenu($parentID, $url) {
         $name = $url;
         $select = $this->_db->select()
